@@ -68,5 +68,101 @@ namespace CSharpTest
 
             Assert.IsTrue(result.Equals(new DateTime(2017, 4, 28)));
         }
+
+        [TestMethod]
+        public void TestWeekendStartBefore()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 5;
+            WeekEnd[] weekends = new WeekEnd[2]
+            {
+                new WeekEnd(new DateTime(2017, 4, 21), new DateTime(2017, 4, 23)),
+                new WeekEnd(new DateTime(2017, 4, 28), new DateTime(2017, 4, 28))
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 4, 29)));
+        }
+
+        [TestMethod]
+        public void TestWeekendAllBefore()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 5;
+            WeekEnd[] weekends = new WeekEnd[1]
+            {
+                new WeekEnd(new DateTime(2017, 4, 18), new DateTime(2017, 4, 21))
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 4, 27)));
+        }
+
+        [TestMethod]
+        public void TestWeekendOneDay()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 5;
+            WeekEnd[] weekends = new WeekEnd[1]
+            {
+                new WeekEnd(new DateTime(2017, 4, 27), new DateTime(2017, 4, 27))
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 4, 28)));
+        }
+
+        [TestMethod]
+        public void TestWeekendWhateverHappens()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 5;
+            WeekEnd[] weekends = new WeekEnd[5]
+            {
+                new WeekEnd(new DateTime(2017, 4, 18), new DateTime(2017, 4, 21)),
+                new WeekEnd(new DateTime(2017, 4, 22), new DateTime(2017, 4, 24)),
+                new WeekEnd(new DateTime(2017, 4, 28), new DateTime(2017, 4, 28)),
+                new WeekEnd(new DateTime(2017, 4, 29), new DateTime(2017, 5, 2)),
+                new WeekEnd(new DateTime(2017, 5, 15), new DateTime(2017, 5, 18))
+
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 5, 4)));
+        }
+
+        [TestMethod]
+        public void TestWeekendIsEveryday()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 5;
+            WeekEnd[] weekends = new WeekEnd[1]
+            {
+                new WeekEnd(new DateTime(2017, 4, 21), new DateTime(2017, 5, 2))
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 5, 7)));
+        }
+
+        [TestMethod]
+        public void TestWeekendIsLife()
+        {
+            DateTime startDate = new DateTime(2017, 4, 23);
+            int count = 0;
+            WeekEnd[] weekends = new WeekEnd[1]
+            {
+                new WeekEnd(new DateTime(2017, 4, 21), new DateTime(2017, 5, 2))
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.IsTrue(result.Equals(new DateTime(2017, 4, 23)));
+        }
     }
 }
